@@ -49,7 +49,7 @@
     cursor: pointer;
     font-size: 1.2em;
     transition: 0.3s;
-    font-color: (255, 255, 255)
+    color: white;
   }
 
   .lang-btn:hover {
@@ -115,9 +115,14 @@
     margin: 30px 0;
     font-size: 0.9em;
     color: #aaa;
+    text-align: center;
   }
 
-  [dir="rtl"] {
+  [dir="rtl"] h1 {
+    text-align: center;
+  }
+
+  [dir="rtl"] #info {
     text-align: right;
   }
 </style>
@@ -136,13 +141,13 @@
   <h1 id="title">The Life Cycle of a Star 🌟</h1>
 
   <div id="timeline">
-    <div class="stage" data-number="1" onclick="showStage('nebula')">🌌 Nebula</div>
-    <div class="stage" data-number="2" onclick="showStage('protostar')">🔥 Protostar</div>
-    <div class="stage" data-number="3" onclick="showStage('main')">☀️ Main Sequence</div>
-    <div class="stage" data-number="4" onclick="showStage('redGiant')">🌠 Red Giant</div>
-    <div class="stage" data-number="5" onclick="showStage('supernova')">💥 Supernova</div>
-    <div class="stage" data-number="6" onclick="showStage('neutron')">🌀 Neutron Star</div>
-    <div class="stage" data-number="7" onclick="showStage('blackHole')">🕳️ Black Hole</div>
+    <div class="stage" data-number="1" id="btn-nebula" onclick="showStage('nebula')">🌌 Nebula</div>
+    <div class="stage" data-number="2" id="btn-protostar" onclick="showStage('protostar')">🔥 Protostar</div>
+    <div class="stage" data-number="3" id="btn-main" onclick="showStage('main')">☀️ Main Sequence</div>
+    <div class="stage" data-number="4" id="btn-redGiant" onclick="showStage('redGiant')">🌠 Red Giant</div>
+    <div class="stage" data-number="5" id="btn-supernova" onclick="showStage('supernova')">💥 Supernova</div>
+    <div class="stage" data-number="6" id="btn-neutron" onclick="showStage('neutron')">🌀 Neutron Star</div>
+    <div class="stage" data-number="7" id="btn-blackHole" onclick="showStage('blackHole')">🕳️ Black Hole</div>
   </div>
 
   <div id="info">
@@ -167,7 +172,8 @@
       supernova: { title: "💥 Supernova", text: "A massive star explodes in a brilliant supernova, scattering elements across space and creating the seeds of new stars and planets.", img: "supernova.jpg" },
       neutron: { title: "🌀 Neutron Star", text: "After a supernova, the core can collapse into an ultra-dense neutron star — a city-sized object with incredible magnetic fields.", img: "neutron-star.jpeg" },
       blackHole: { title: "🕳️ Black Hole", text: "If the collapsing core is massive enough, not even light can escape — forming a black hole, the most mysterious object in the universe.", img: "black-hole.jpg" }
-    }
+    },
+    buttonNames: ["🌌 Nebula", "🔥 Protostar", "☀️ Main Sequence", "🌠 Red Giant", "💥 Supernova", "🌀 Neutron Star", "🕳️ Black Hole"]
   };
 
   const dataAR = {
@@ -183,7 +189,8 @@
       supernova: { title: "💥 Supernova - المستعر الأعظم", text: "ينفجر النجم الضخم في انفجار ساطع يُعرف بالمستعر الأعظم، ناشرًا العناصر عبر الفضاء ومشكلًا بذور نجوم جديدة.", img: "supernova.jpg" },
       neutron: { title: "🌀 Neutron Star - النجم النيوتروني", text: "بعد المستعر الأعظم، قد ينهار اللب ليصبح نجمًا نيوترونيًا فائق الكثافة بحقول مغناطيسية مذهلة.", img: "neutron-star.jpeg" },
       blackHole: { title: "🕳️ Black Hole - الثقب الأسود", text: "إذا كان اللب المنهار ضخمًا بما يكفي، فلن يتمكن الضوء حتى من الهروب، مكونًا الثقب الأسود، أكثر الأجرام غموضًا في الكون.", img: "black-hole.jpg" }
-    }
+    },
+    buttonNames: ["🌌 السديم", "🔥 النجم الأولي", "☀️ التسلسل الرئيسي", "🌠 العملاق الأحمر", "💥 المستعر الأعظم", "🌀 النجم النيوتروني", "🕳️ الثقب الأسود"]
   };
 
   let currentData = dataEN;
@@ -191,6 +198,7 @@
   function setLanguage(lang) {
     document.getElementById("language-select").style.display = "none";
     document.getElementById("content").style.display = "block";
+
     if (lang === "ar") {
       document.body.dir = "rtl";
       currentData = dataAR;
@@ -198,12 +206,19 @@
       document.body.dir = "ltr";
       currentData = dataEN;
     }
+
     document.getElementById("title").innerText = currentData.title;
     document.getElementById("info").innerHTML = `
       <h2>${currentData.introTitle}</h2>
       <p>${currentData.introText}</p>
     `;
     document.getElementById("footer").innerText = currentData.footer;
+
+    // Change button text
+    const ids = ["btn-nebula", "btn-protostar", "btn-main", "btn-redGiant", "btn-supernova", "btn-neutron", "btn-blackHole"];
+    ids.forEach((id, i) => {
+      document.getElementById(id).innerText = currentData.buttonNames[i];
+    });
   }
 
   function showStage(stage) {
