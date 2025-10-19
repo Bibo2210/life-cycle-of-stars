@@ -12,6 +12,7 @@
     text-align: center;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
   }
 
   h1 {
@@ -19,15 +20,52 @@
     font-size: 2.3em;
   }
 
+  #language-select {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, #030314, #000);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 10;
+  }
+
+  #language-select h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
+  }
+
+  .lang-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    padding: 15px 30px;
+    margin: 10px;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: 0.3s;
+  }
+
+  .lang-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+
   #timeline {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 20px;
     margin: 40px 20px;
   }
 
   .stage {
+    position: relative;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
@@ -39,6 +77,21 @@
   .stage:hover {
     background: rgba(255, 255, 255, 0.25);
     transform: scale(1.05);
+  }
+
+  .stage::before {
+    content: attr(data-number);
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: 0.3s;
+    font-weight: bold;
+  }
+
+  .stage:hover::before {
+    opacity: 1;
   }
 
   #info {
@@ -62,74 +115,99 @@
     font-size: 0.9em;
     color: #aaa;
   }
+
+  [dir="rtl"] {
+    text-align: right;
+  }
 </style>
 </head>
 <body>
 
-<h1>The Life Cycle of a Star 🌟</h1>
-
-<div id="timeline">
-  <div class="stage" onclick="showStage('nebula')">🌌 Nebula</div>
-  <div class="stage" onclick="showStage('protostar')">🔥 Protostar</div>
-  <div class="stage" onclick="showStage('main')">☀️ Main Sequence</div>
-  <div class="stage" onclick="showStage('redGiant')">🌠 Red Giant</div>
-  <div class="stage" onclick="showStage('supernova')">💥 Supernova</div>
-  <div class="stage" onclick="showStage('neutron')">🌀 Neutron Star</div>
-  <div class="stage" onclick="showStage('blackHole')">🕳️ Black Hole</div>
+<!-- Language selection screen -->
+<div id="language-select">
+  <h2>Select your language / اختر لغتك</h2>
+  <button class="lang-btn" onclick="setLanguage('en')">English 🇬🇧</button>
+  <button class="lang-btn" onclick="setLanguage('ar')">العربية 🇸🇦</button>
 </div>
 
-<div id="info">
-  <h2>Click a stage above to explore a star’s journey!</h2>
-  <p>The life of a star begins in a cloud of gas and dust and ends in either a gentle fade or a cosmic explosion.</p>
-</div>
+<!-- Main content -->
+<div id="content" style="display:none;">
+  <h1 id="title">The Life Cycle of a Star 🌟</h1>
 
-<footer>
-  © 2025 | Interactive Project by Bilal
-</footer>
+  <div id="timeline">
+    <div class="stage" data-number="1" onclick="showStage('nebula')">🌌 Nebula</div>
+    <div class="stage" data-number="2" onclick="showStage('protostar')">🔥 Protostar</div>
+    <div class="stage" data-number="3" onclick="showStage('main')">☀️ Main Sequence</div>
+    <div class="stage" data-number="4" onclick="showStage('redGiant')">🌠 Red Giant</div>
+    <div class="stage" data-number="5" onclick="showStage('supernova')">💥 Supernova</div>
+    <div class="stage" data-number="6" onclick="showStage('neutron')">🌀 Neutron Star</div>
+    <div class="stage" data-number="7" onclick="showStage('blackHole')">🕳️ Black Hole</div>
+  </div>
+
+  <div id="info">
+    <h2>Click a stage above to explore a star’s journey!</h2>
+    <p>The life of a star begins in a cloud of gas and dust and ends in either a gentle fade or a cosmic explosion.</p>
+  </div>
+
+  <footer id="footer">© 2025 | Interactive Project by Bilal</footer>
+</div>
 
 <script>
-  const stages = {
-    nebula: {
-      title: "🌌 Nebula",
-      text: "A nebula is a massive cloud of gas and dust in space. Gravity slowly pulls it together until a dense core forms — the birthplace of stars.",
-      img: "nebula.jpeg"
-    },
-    protostar: {
-      title: "🔥 Protostar",
-      text: "As gravity continues to compress the cloud, it heats up and begins glowing. This is the protostar stage, where nuclear fusion is about to start.",
-      img: "protostar.jpg"
-    },
-    main: {
-      title: "☀️ Main Sequence",
-      text: "The star reaches balance between gravity and fusion pressure. It spends most of its life here, converting hydrogen into helium — like our Sun does.",
-      img: "main-sequence.jpeg"
-    },
-    redGiant: {
-      title: "🌠 Red Giant / Supergiant",
-      text: "When hydrogen runs out, the star expands and cools, turning red. Outer layers swell while the core fuses heavier elements.",
-      img: "red-giant.jpeg"
-    },
-    supernova: {
-      title: "💥 Supernova",
-      text: "A massive star explodes in a brilliant supernova, scattering elements across space and creating the seeds of new stars and planets.",
-      img: "supernova.jpg"
-    },
-    neutron: {
-      title: "🌀 Neutron Star",
-      text: "After a supernova, the core can collapse into an ultra-dense neutron star — a city-sized object with incredible magnetic fields.",
-      img: "neutron-star.jpeg"
-    },
-    blackHole: {
-      title: "🕳️ Black Hole",
-      text: "If the collapsing core is massive enough, not even light can escape — forming a black hole, the most mysterious object in the universe.",
-      img: "black-hole.jpg"
+  const dataEN = {
+    title: "The Life Cycle of a Star 🌟",
+    introTitle: "Click a stage above to explore a star’s journey!",
+    introText: "The life of a star begins in a cloud of gas and dust and ends in either a gentle fade or a cosmic explosion.",
+    footer: "© 2025 | Interactive Project by Bilal",
+    stages: {
+      nebula: { title: "🌌 Nebula", text: "A nebula is a massive cloud of gas and dust in space. Gravity slowly pulls it together until a dense core forms — the birthplace of stars.", img: "nebula.jpeg" },
+      protostar: { title: "🔥 Protostar", text: "As gravity continues to compress the cloud, it heats up and begins glowing. This is the protostar stage, where nuclear fusion is about to start.", img: "protostar.jpg" },
+      main: { title: "☀️ Main Sequence", text: "The star reaches balance between gravity and fusion pressure. It spends most of its life here, converting hydrogen into helium — like our Sun does.", img: "main-sequence.jpeg" },
+      redGiant: { title: "🌠 Red Giant", text: "When hydrogen runs out, the star expands and cools, turning red. Outer layers swell while the core fuses heavier elements.", img: "red-giant.jpeg" },
+      supernova: { title: "💥 Supernova", text: "A massive star explodes in a brilliant supernova, scattering elements across space and creating the seeds of new stars and planets.", img: "supernova.jpg" },
+      neutron: { title: "🌀 Neutron Star", text: "After a supernova, the core can collapse into an ultra-dense neutron star — a city-sized object with incredible magnetic fields.", img: "neutron-star.jpeg" },
+      blackHole: { title: "🕳️ Black Hole", text: "If the collapsing core is massive enough, not even light can escape — forming a black hole, the most mysterious object in the universe.", img: "black-hole.jpg" }
     }
   };
 
+  const dataAR = {
+    title: "دورة حياة النجم 🌟",
+    introTitle: "اضغط على مرحلة من المراحل أعلاه لاستكشاف رحلة النجم!",
+    introText: "تبدأ حياة النجم في سحابة ضخمة من الغاز والغبار، وتنتهي إما بانطفاء هادئ أو بانفجار كوني هائل.",
+    footer: "© 2025 | مشروع تفاعلي من إعداد بلال",
+    stages: {
+      nebula: { title: "🌌 Nebula - السديم", text: "السديم هو سحابة ضخمة من الغاز والغبار في الفضاء. تعمل الجاذبية على تجميعها تدريجيًا حتى تتكون نواة كثيفة تُعد مهد النجوم.", img: "nebula.jpeg" },
+      protostar: { title: "🔥 Protostar - النجم الأولي", text: "مع استمرار الانضغاط، تبدأ السحابة في التسخين والإشعاع. هذه هي مرحلة النجم الأولي حيث تبدأ التفاعلات النووية بالظهور.", img: "protostar.jpg" },
+      main: { title: "☀️ Main Sequence - التسلسل الرئيسي", text: "يصل النجم إلى توازن بين الجاذبية وضغط الاندماج النووي. يقضي معظم حياته هنا محولًا الهيدروجين إلى هيليوم، مثل الشمس.", img: "main-sequence.jpeg" },
+      redGiant: { title: "🌠 Red Giant - العملاق الأحمر", text: "عندما ينفد الهيدروجين، يتمدد النجم ويبرد، ويتحول إلى اللون الأحمر، بينما يبدأ لبّه في دمج عناصر أثقل.", img: "red-giant.jpeg" },
+      supernova: { title: "💥 Supernova - المستعر الأعظم", text: "ينفجر النجم الضخم في انفجار ساطع يُعرف بالمستعر الأعظم، ناشرًا العناصر عبر الفضاء ومشكلًا بذور نجوم جديدة.", img: "supernova.jpg" },
+      neutron: { title: "🌀 Neutron Star - النجم النيوتروني", text: "بعد المستعر الأعظم، قد ينهار اللب ليصبح نجمًا نيوترونيًا فائق الكثافة بحقول مغناطيسية مذهلة.", img: "neutron-star.jpeg" },
+      blackHole: { title: "🕳️ Black Hole - الثقب الأسود", text: "إذا كان اللب المنهار ضخمًا بما يكفي، فلن يتمكن الضوء حتى من الهروب، مكونًا الثقب الأسود، أكثر الأجرام غموضًا في الكون.", img: "black-hole.jpg" }
+    }
+  };
+
+  let currentData = dataEN;
+
+  function setLanguage(lang) {
+    document.getElementById("language-select").style.display = "none";
+    document.getElementById("content").style.display = "block";
+    if (lang === "ar") {
+      document.body.dir = "rtl";
+      currentData = dataAR;
+    } else {
+      document.body.dir = "ltr";
+      currentData = dataEN;
+    }
+    document.getElementById("title").innerText = currentData.title;
+    document.getElementById("info").innerHTML = `
+      <h2>${currentData.introTitle}</h2>
+      <p>${currentData.introText}</p>
+    `;
+    document.getElementById("footer").innerText = currentData.footer;
+  }
+
   function showStage(stage) {
-    const info = document.getElementById("info");
-    const data = stages[stage];
-    info.innerHTML = `
+    const data = currentData.stages[stage];
+    document.getElementById("info").innerHTML = `
       <h2>${data.title}</h2>
       <p>${data.text}</p>
       <img src="${data.img}" alt="${data.title}">
