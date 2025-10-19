@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Life Cycle of a Star 🌟</title>
+<style>
+  body {
+    font-family: "Poppins", sans-serif;
+    background: radial-gradient(circle at top, #0b0c2a, #000);
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    margin-top: 40px;
+    font-size: 2.3em;
+  }
+
+  #timeline {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 40px 20px;
+  }
+
+  .stage {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 15px 25px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .stage:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
+  }
+
+  #info {
+    max-width: 700px;
+    margin: 20px auto;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 25px;
+    border-radius: 20px;
+    text-align: left;
+    line-height: 1.5;
+  }
+
+  #info img {
+    width: 100%;
+    border-radius: 12px;
+    margin-top: 10px;
+  }
+
+  footer {
+    margin: 30px 0;
+    font-size: 0.9em;
+    color: #aaa;
+  }
+</style>
+</head>
+<body>
+
+<h1>The Life Cycle of a Star 🌟</h1>
+
+<div id="timeline">
+  <div class="stage" onclick="showStage('nebula')">🌌 Nebula</div>
+  <div class="stage" onclick="showStage('protostar')">🔥 Protostar</div>
+  <div class="stage" onclick="showStage('main')">☀️ Main Sequence</div>
+  <div class="stage" onclick="showStage('redGiant')">🌠 Red Giant</div>
+  <div class="stage" onclick="showStage('supernova')">💥 Supernova</div>
+  <div class="stage" onclick="showStage('neutron')">🌀 Neutron Star</div>
+  <div class="stage" onclick="showStage('blackHole')">🕳️ Black Hole</div>
+</div>
+
+<div id="info">
+  <h2>Click a stage above to explore a star’s journey!</h2>
+  <p>The life of a star begins in a cloud of gas and dust and ends in either a gentle fade or a cosmic explosion.</p>
+</div>
+
+<footer>
+  © 2025 | Interactive Project by Bilal | Images: NASA (Public Domain)
+</footer>
+
+<script>
+  const stages = {
+    nebula: {
+      title: "🌌 Nebula",
+      text: "A nebula is a massive cloud of gas and dust in space. Gravity slowly pulls it together until a dense core forms — the birthplace of stars.",
+      img: "https://upload.wikimedia.org/wikipedia/commons/1/1d/Eagle_nebula_pillars.jpg"
+    },
+    protostar: {
+      title: "🔥 Protostar",
+      text: "As gravity continues to compress the cloud, it heats up and begins glowing. This is the protostar stage, where nuclear fusion is about to start.",
+      img: "https://upload.wikimedia.org/wikipedia/commons/3/3d/Protostar_HOPS_383.jpg"
+    },
+    main: {
+      title: "☀️ Main Sequence",
+      text: "The star reaches balance between gravity and fusion pressure. It spends most of its life here, converting hydrogen into helium — like our Sun does.",
+      img: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Sun_white.jpg"
+    },
+    redGiant: {
+      title: "🌠 Red Giant / Supergiant",
+      text: "When hydrogen runs out, the star expands and cools, turning red. Outer layers swell while the core fuses heavier elements.",
+      img: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Betelgeuse_star.jpg"
+    },
+    supernova: {
+      title: "💥 Supernova",
+      text: "A massive star explodes in a brilliant supernova, scattering elements across space and creating the seeds of new stars and planets.",
+      img: "https://upload.wikimedia.org/wikipedia/commons/3/3f/SN1994D.jpg"
+    },
+    neutron: {
+      title: "🌀 Neutron Star",
+      text: "After a supernova, the core can collapse into an ultra-dense neutron star — a city-sized object with incredible magnetic fields.",
+      img: "https://upload.wikimedia.org/wikipedia/commons/6/6d/Neutron_star_life_cycle.jpg"
+    },
+    blackHole: {
+      title: "🕳️ Black Hole",
+      text: "If the collapsing core is massive enough, not even light can escape — forming a black hole, the most mysterious object in the universe.",
+      img: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Black_hole_-_Messier_87_crop_max_res.jpg"
+    }
+  };
+
+  function showStage(stage) {
+    const info = document.getElementById("info");
+    const data = stages[stage];
+    info.innerHTML = `
+      <h2>${data.title}</h2>
+      <p>${data.text}</p>
+      <img src="${data.img}" alt="${data.title}">
+    `;
+  }
+</script>
+
+</body>
+</html>
